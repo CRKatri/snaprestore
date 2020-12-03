@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
 	mount(vol, snap, mnt);
 	printf("Mounted %s at %s\n", snap, mnt);
 	NSMutableSet *appSet = findApps(vol, mnt);
-	if (appSet) {
+	if ([appSet count]) {
 		printf("Refreshing icon cache...\n");
 		NSMutableArray *argArray = [[NSMutableArray alloc] init];
 		for (NSString *app in appSet) {

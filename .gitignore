@@ -1,3 +1,5 @@
 snaprestore
+staging
+*.deb
 compile_commands.json
 .cache

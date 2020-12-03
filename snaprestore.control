@@ -1,0 +1,8 @@
+Package: snaprestore
+Section: Utilities
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SNAPRESTORE@
+Description: Easily restore rootfs from the command line
+	I wholeheartly don't recommend it
+Depends: uikittools (>= 2.0.3)

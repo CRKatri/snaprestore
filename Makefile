@@ -16,6 +16,7 @@ all: snaprestore
 
 snaprestore: snaprestore.m ent.xml NSTask.h
 	$(CC) $(CFLAGS) -o snaprestore snaprestore.m -framework IOKit -framework Foundation -fobjc-arc
+	$(STRIP) snaprestore
 	$(LDID) -Sent.xml snaprestore
 
 install: snaprestore

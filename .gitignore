@@ -1,4 +1,4 @@
-snaprestore
+build
 staging
 *.deb
 compile_commands.json

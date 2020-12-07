@@ -3,7 +3,18 @@
 #import <IOKit/IOKitLib.h>
 #import <sys/snapshot.h>
 #import <getopt.h>
-#import "NSTask.h"
+
+@interface LSApplicationWorkspace : NSObject
++ (id)defaultWorkspace;
+- (BOOL)_LSPrivateRebuildApplicationDatabasesForSystemApps:(BOOL)arg1 internal:(BOOL)arg2 user:(BOOL)arg3;
+- (BOOL)registerApplicationDictionary:(NSDictionary *)applicationDictionary;
+- (BOOL)registerBundleWithInfo:(NSDictionary *)bundleInfo options:(NSDictionary *)options type:(unsigned long long)arg3 progress:(id)arg4 ;
+- (BOOL)registerApplication:(NSURL *)url;
+- (BOOL)registerPlugin:(NSURL *)url;
+- (BOOL)unregisterApplication:(NSURL *)url;
+- (NSArray *)installedPlugins;
+-(void)_LSPrivateSyncWithMobileInstallation;
+@end
 
 void usage(char *name) {
 	printf(
@@ -68,6 +79,13 @@ NSMutableSet *findApps(const char *root, const char *mnt) {
 	return ret;
 }
 
+int unregisterPath(NSString *path) {
+	path = [path stringByResolvingSymlinksInPath];
+	NSURL *url = [NSURL fileURLWithPath:path];
+	LSApplicationWorkspace *workspace = [LSApplicationWorkspace defaultWorkspace];
+	return [workspace unregisterApplication:url];
+}
+
 int rename(const char *vol, const char *snap) {
 	int fd = open(vol, O_RDONLY, 0);
 
@@ -93,17 +111,10 @@ int main(int argc, char *argv[]) {
 	printf("Mounted %s at %s\n", snap, mnt);
 	NSMutableSet *appSet = findApps(vol, mnt);
 	if ([appSet count]) {
-		printf("Refreshing icon cache...\n");
-		NSMutableArray *argArray = [[NSMutableArray alloc] init];
 		for (NSString *app in appSet) {
-			[argArray addObject:@"-u"];
-			[argArray addObject:app];
+			printf("unregistering %s\n", [app UTF8String]);
+			unregisterPath(app);
 		}
-		NSTask *task = [[NSTask alloc] init];
-		[task setLaunchPath:@"/usr/bin/uicache"];
-		[task setArguments:argArray];
-		[task launch];
-		[task waitUntilExit];
 	}
 	printf("Renaming snapshot...\n");
 	rename(vol, snap);

@@ -1,7 +1,7 @@
 CC              ?= aarch64-apple-darwin-clang
 STRIP           ?= aarch64-apple-darwin-strip
 LDID            ?= ldid
-CFLAGS          ?= -arch arm64  -isysroot /home/cameron/Documents/SDK/iPhoneOS14.2.sdk -miphoneos-version-min=13.0 -Iinclude
+CFLAGS          ?= -arch arm64  -isysroot /home/cameron/Documents/SDK/iPhoneOS14.2.sdk -miphoneos-version-min=13.0
 INSTALL         ?= install
 FAKEROOT        ?= fakeroot
 PREFIX          ?= /usr
@@ -16,7 +16,7 @@ all: build/snaprestore
 
 build/snaprestore: src/snaprestore.m src/ent.xml
 	mkdir -p build
-	$(CC) $(CFLAGS) -o build/snaprestore src/snaprestore.m -framework IOKit -framework Foundation -framework MobileCoreServices -fobjc-arc
+	$(CC) $(CFLAGS) -o build/snaprestore src/snaprestore.m -framework IOKit -framework Foundation -framework CoreServices -fobjc-arc
 	$(STRIP) build/snaprestore
 	$(LDID) -Ssrc/ent.xml build/snaprestore
 

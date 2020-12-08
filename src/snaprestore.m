@@ -1,8 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <Foundation/NSFileManager.h>
-#import <IOKit/IOKitLib.h>
 #import <sys/snapshot.h>
 #import <getopt.h>
+
+typedef char io_string_t[512];
+typedef mach_port_t io_object_t;
+typedef io_object_t io_registry_entry_t;
+io_registry_entry_t IORegistryEntryFromPath(mach_port_t master, const io_string_t path);
+CFTypeRef IORegistryEntryCreateCFProperty(io_registry_entry_t entry, CFStringRef key, CFAllocatorRef allocator, uint32_t options);
+kern_return_t IOObjectRelease(io_object_t object);
 
 @interface LSApplicationWorkspace : NSObject
 + (id)defaultWorkspace;

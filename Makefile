@@ -9,7 +9,7 @@ DESTDIR         ?=
 
 DEB_MAINTAINER  ?= Cameron Katri <me@cameronkatri.com>
 DEB_ARCH        ?= iphoneos-arm
-SNAPRESTORE_V   := 0.2
+SNAPRESTORE_V   := 0.3
 DEB_SNAPRESTORE := $(SNAPRESTORE_V)
 
 all: build/snaprestore

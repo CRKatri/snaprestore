@@ -99,6 +99,15 @@ int rename(const char *vol, const char *snap) {
 	return ret;
 }
 
+int clean() {
+	NSArray *extrafiles = @[@"/var/lib", @"/var/cache"];
+	NSError *error = nil;
+	for (NSString *path in extrafiles) {
+		[[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+	}
+	return 0;
+}
+
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		usage(argv[0]);
@@ -122,6 +131,8 @@ int main(int argc, char *argv[]) {
 			unregisterPath(app);
 		}
 	}
+	printf("Cleaning up /var\n");
+	clean();
 	printf("Renaming snapshot...\n");
 	rename(vol, snap);
 	printf("Restoring %s on %s has succeeded\n", snap, vol); 
